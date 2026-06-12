@@ -414,9 +414,13 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = ($this->unwrapped ?? $this->unwrap());
 
-        assert($instance instanceof UuidV6);
+        if ($instance instanceof UuidV6) {
+            return $instance;
+        }
 
-        return $instance;
+        assert($instance instanceof UuidV1);
+
+        return UuidV6::fromUuidV1($instance);
     }
 
     private function unwrap(): UuidInterface

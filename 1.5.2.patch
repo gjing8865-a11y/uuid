@@ -1,0 +1,20 @@
+diff --git a/src/Lazy/LazyUuidFromString.php b/src/Lazy/LazyUuidFromString.php
+index 8d3129c..ff551f0 100644
+--- a/src/Lazy/LazyUuidFromString.php
++++ b/src/Lazy/LazyUuidFromString.php
+@@ -414,9 +414,13 @@ final class LazyUuidFromString implements UuidInterface
+     {
+         $instance = ($this->unwrapped ?? $this->unwrap());
+ 
+-        assert($instance instanceof UuidV6);
++        if ($instance instanceof UuidV6) {
++            return $instance;
++        }
++
++        assert($instance instanceof UuidV1);
+ 
+-        return $instance;
++        return UuidV6::fromUuidV1($instance);
+     }
+ 
+     private function unwrap(): UuidInterface
